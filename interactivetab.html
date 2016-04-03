@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>An Interactive Tab</title>
+		<style>
+			.tabStrip {
+				background-color: #e4e2d5;
+				padding: 3px;
+				height: 22px;
+			}
+			
+			.tabStrip div {
+				float: left;
+				font: 14px arial;
+				cursor: pointer;
+			}
+			
+			.tabStrip-tab {
+				padding: 3px;
+			}
+			
+			.tabStrip-tab-hover {
+				border: 1px solid #316ac5;
+				background-color: #c1d2ee;
+				padding: 2px;
+			}
+			
+			.tabStrip-tab-click {
+				border: 1px solid #facc5a;
+				background-color: #f9e391;
+				padding: 2px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="tabStrip">
+			<div data-tab-number="1" class="tabStrip-tab">Tab 1</div>
+			<div data-tab-number="2" class="tabStrip-tab">Tab 2</div>
+			<div data-tab-number="3" class="tabStrip-tab">Tab 3</div>
+		</div>
+		<div id="descContainer"></div>
+		
+		<script>
+			function handleEvent(e) {
+				var target = e.target;
+				
+				switch (e.type) {
+					case "mouseover":
+						if (target.className == "tabStrip-tab") {
+							target.className = "tabStrip-tab-hover";
+						}
+						break;
+					case "mouseout":
+						if (target.className == "tabStrip-tab-hover") {
+							target.className = "tabStrip-tab";
+						}
+						break;
+					case "click":
+						var currentClicked = document.querySelector(".tabStrip-tab-click");
+						if (currentClicked && target.tagName == "DIV") {
+							currentClicked.className = "tabStrip-tab";
+							showDescription(0);
+						}
+						if (target.className == "tabStrip-tab-hover") {
+							target.className = "tabStrip-tab-click";
+							var num = target.getAttribute("data-tab-number");
+							
+							showDescription(num);
+						}
+						if (currentClicked == target) {
+							currentClicked.className = "tabStrip-tab-hover";
+						}
+						break;
+				}
+			}
+			
+			function showDescription(num) {
+				console.log(num);
+				if ( num == 0 ) {
+					descContainer.innerHTML = "";
+					return;
+				}
+				var text = "Description for Tab " + num;
+				
+				descContainer.innerHTML = text;
+			}
+			
+			document.addEventListener("mouseover", handleEvent);
+			document.addEventListener("mouseout", handleEvent);
+			document.addEventListener("click", handleEvent);
+		</script>
+	</body>
+</html>
